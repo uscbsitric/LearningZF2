@@ -62,18 +62,17 @@
 			return $viewModel;
 		}
 
-		public function createUser(array $data)
+		protected function createUser(array $data)
 		{
 			$serviceManager = $this->getServiceLocator();
 			$dbAdapter = $serviceManager->get('Zend\Db\Adapter\Adapter');
 			$resultSetPrototype = new \Zend\Db\ResultSet\ResultSet();
 			$resultSetPrototype->setArrayObjectPrototype(new \Users\Model\User);
 			$tableGateway = new \Zend\Db\TableGateway\TableGateway('user' /*table name*/, $dbAdapter, null, $resultSetPrototype);
-			
 			$user = new User();
 			$user->exchangeArray($data);
 			$userTable = new UserTable($tableGateway);
-			$userTable->saveUser();
+			$userTable->saveUser($user);
 			
 			return true;
 		}
